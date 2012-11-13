@@ -1,7 +1,9 @@
-#!/bin/ruby
+#!/usr/bin/env ruby
 
 require 'bundler/setup'
 require 'taglib'
+
+IGNORED_FILES = ['..','.','.DS_Store']
 
 if ARGV.empty?
   puts('USE: ruby tagger.rb music-folder[, music-folder2, [...]]')
@@ -12,7 +14,7 @@ ATTRIBUTES = [:artist, :album]
 
 def recursive_tag folder, attribute_index=0, data={}
   Dir.open(folder).each do |f|
-    next if f == '..' || f == '.'
+    next if IGNORED_FILES.include? f
     path = "#{folder}/#{f}"
     if File.directory? path
       data[ATTRIBUTES[attribute_index]] = f
